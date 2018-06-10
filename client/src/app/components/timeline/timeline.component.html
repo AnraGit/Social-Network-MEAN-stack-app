@@ -1,0 +1,113 @@
+<div class="col-lg-8">
+  <h1 class="h1-strong">{{title}}
+
+    <button class="btn btn-success pull-right" (click)="refresh($event)">Actualizar</button>
+  </h1>
+
+
+  <div id="publications">
+      <div *ngFor="let publication of publications" class="item-publication">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="image-user pull-left">
+              <a>
+                <img src="{{url + 'get-image-user/' + publication.user.image}}" *ngIf="publication.user.image" />
+  
+                <img src="assets/default-user.png" class="avatar-default" *ngIf="!publication.user.image" />
+              </a>
+            </div>
+            <div>
+            <span class="user-name">
+              {{publication.user.name + ' ' + publication.user.surname}}
+            </span>
+            &nbsp;|&nbsp;
+            <span class="date">
+                {{ (publication.created_at | amFromUnix) | amLocale: 'es' | amTimeAgo}}
+            </span>
+          </div>
+  
+            <h4 class="publication-text pull-left">
+              {{publication.text}}
+            </h4>
+            <!--Borrar publicaciones -->
+            <div class="pull-right" *ngIf="publication.user._id == identity._id ">
+              &nbsp;
+              <!--
+                <button class="btn btn-danger pull-right" (click)="showThisImage(publication._id)" *ngIf="showImage != publication._id">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </button>
+              -->
+
+              <!-- Modal de verificación -->
+              <a href="#myModal{{publication._id}}" role="button" class="btn btn-large btn-danger"
+              data-toggle="modal" *ngIf="showImage != publication._id">
+              <span class="glyphicon glyphicon-trash"></span>
+            </a>
+
+              <!--Modal-->
+              <div id="myModal{{publication._id}}" class="modal fade">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal"
+                      aria-hidden="true"></button>
+                      <h4 class="modal-header">Va a eliminar una publicación</h4>
+                    </div>
+                    <div class="modal-body">
+                      <p>¿Seguro que quiere borrar la publicación?</p>
+                      <p class="text-warning"><small>Una vez borrada no podrá recuperar la publicación</small></p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-warning" data-dismiss="modal">Cancelar</button>
+                      <button type="button" class="btn btn-danger" (click)="deletePublication(publication._id)" data-dismiss="modal">Eliminar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+                &nbsp;
+              </div>
+
+            <!-- Mostrar imágen -->
+            <div class="pull-right" *ngIf="publication.file != 'null' ">
+                <button class="btn btn-warning pull-right" (click)="showThisImage(publication._id)" *ngIf="showImage != publication._id">
+                  <span class="glyphicon glyphicon-picture"></span>
+                </button>
+                <button class="btn btn-danger pull-right" (click)="hideThisImage(publication._id)" *ngIf="showImage == publication._id">
+                  <span class="glyphicon glyphicon-remove-circle"></span>
+                </button>
+              </div>
+        
+            <div class="col-lg-12" *ngIf="publication.file != 'null' && showImage == publication._id" >
+ 
+              <img src="{{url + 'get-image-pub/' + publication.file}}" class="col-lg-12"/>
+
+            </div>
+
+
+
+          </div>
+  
+  
+        </div>
+  
+      </div>
+  
+    </div>
+  
+    <div class="col-lg-12 text-center">
+          <button class="btn btn-success" (click)="viewMore()" *ngIf="!noMore">
+              Ver más publicaciones
+          </button>
+          </div>
+  
+</div>
+
+<sidebar (sended)="refresh($event)"></sidebar>
+
+<div class="clearfix">
+</div>
+
+
